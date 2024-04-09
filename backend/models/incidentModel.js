@@ -7,7 +7,7 @@ const incidentSchema = new mongoose.Schema({
   description: { type: String, required: true },
   comments: { type: String },
   reportedBy: {type: mongoose.Schema.ObjectId, ref: 'User'},
-  status: { type: String, required: true, enum: ['open', 'closed', 'in progress'] },
+  status: { type: String, enum: ['open', 'closed', 'in progress'] },
   dateCreated: { type: Date, default: Date.now },
   dateUpdated: { type: Date, default: Date.now },
   

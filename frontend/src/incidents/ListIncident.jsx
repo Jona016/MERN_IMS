@@ -49,27 +49,22 @@ export default function MyIncidents() {
       try {
         const jwt = auth.isAuthenticated();
         const admin = auth.isAdmin();
+        let data;
         if (!admin) {
-          const data = await listByUser({ userId: jwt.user._id, t: jwt.token });
-          if (data.error) {
-            setRedirectToSignin(true);
-          } else {
-            setIncidents(data);
-          }
+          data = await listByUser({ userId: jwt.user._id, t: jwt.token });
         } else {
-          const data = await list({ t: jwt.token });
-          if (data.error) {
-            setRedirectToSignin(true);
-          } else {
-            setIncidents(data);
-          }
+          data = await list({ t: jwt.token });
+        }
+        if (data.error) {
+          setRedirectToSignin(true);
+        } else {
+          setIncidents(data);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
-    //  console.log(admin);
     fetchData();
 
     return () => {
@@ -80,34 +75,17 @@ export default function MyIncidents() {
   const deleteIncident = async (incident) => {
     try {
       const jwt = auth.isAuthenticated();
-      const admin = auth.isAdmin();
-      //Confirmation dialog
-      if (!admin) {
-        const data = await remove(
-          { incidentId: incident._id },
-          { t: jwt.token }
-        );
-        if (data.error) {
-          console.error(data.error);
-        } else {
-          const updatedIncidents = incidents.filter(
-            (item) => item._id !== incident._id
-          );
-          setIncidents(updatedIncidents);
-        }
+      const data = await remove(
+        { incidentId: incident._id },
+        { t: jwt.token }
+      );
+      if (data.error) {
+        console.error(data.error);
       } else {
-        const data = await remove(
-          { incidentId: incident._id },
-          { t: jwt.token }
+        const updatedIncidents = incidents.filter(
+          (item) => item._id !== incident._id
         );
-        if (data.error) {
-          console.error(data.error);
-        } else {
-          const updatedIncidents = incidents.filter(
-            (item) => item._id !== incident._id
-          );
-          setIncidents(updatedIncidents);
-        }
+        setIncidents(updatedIncidents);
       }
     } catch (error) {
       console.error(error);
@@ -129,7 +107,7 @@ export default function MyIncidents() {
         <Typography type="title" className={classes.title}>
           Your Incidents
           <span className={classes.addButton}>
-            <Link to="/incidents/new">
+            <Link to={auth.isAdmin() ? `/admin/incidents/new` : `/incidents/new`}>
               <Button color="primary" variant="contained">
                 <AddIcon className={classes.leftIcon} /> New Incident
               </Button>
@@ -163,12 +141,7 @@ export default function MyIncidents() {
                 />
                 {auth.isAuthenticated().user && (
                   <ListItemSecondaryAction>
-                    <Link to={`/incidents/edit/${incident._id}`}>
-                      <IconButton aria-label="Edit" color="primary">
-                        <EditIcon />
-                      </IconButton>
-                    </Link>
-                    {(auth.isAdmin() ||
+                    {((auth.isAdmin() ||
                       incident.reportedBy ===
                         auth.isAuthenticated().user._id) && (
                       <IconButton
@@ -178,7 +151,20 @@ export default function MyIncidents() {
                       >
                         <DeleteIcon />
                       </IconButton>
-                    )}
+                    ))}
+                    {((auth.isAdmin() && (
+                      <Link to={`/admin/incidents/edit/${incident._id}`}>
+                        <IconButton aria-label="Edit" color="primary">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
+                    )) || (
+                      <Link to={`/incidents/edit/${incident._id}`}>
+                        <IconButton aria-label="Edit" color="primary">
+                          <EditIcon />
+                        </IconButton>
+                      </Link>
+                    ))}
                   </ListItemSecondaryAction>
                 )}
               </ListItem>

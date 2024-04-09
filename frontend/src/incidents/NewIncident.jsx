@@ -9,6 +9,8 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import { create as createIncident } from './api-incident.js';
 import { Link, Navigate, useParams } from 'react-router-dom';
+import auth from '../lib/auth-helper.js';
+
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -61,8 +63,6 @@ export default function NewIncident() {
       category: values.category,
       severity: values.severity,
       description: values.description,
-      comments: values.comments,
-      status: values.status,
     };
 
     createIncident(incidentData).then((data) => {
@@ -77,8 +77,6 @@ export default function NewIncident() {
             category: '',
             severity: '',
             description: '',
-            comments: '',
-            status: '',
             error: '',
             redirect: false,
           })
@@ -132,25 +130,6 @@ export default function NewIncident() {
             margin="normal"
           />
           <br />
-          <TextField
-            id="comments"
-            label="Comments"
-            multiline
-            value={values.comments}
-            onChange={handleChange('comments')}
-            className={classes.textField}
-            margin="normal"
-          />
-          <br />
-          <TextField
-            id="status"
-            label="Status"
-            className={classes.textField}
-            value={values.status}
-            onChange={handleChange('status')}
-            margin="normal"
-          />
-          <br />
           {values.error && (
             <Typography component="p" color="error">
               <Icon color="error" className={classes.error}>
@@ -169,7 +148,7 @@ export default function NewIncident() {
           >
             Submit
           </Button>
-          <Link to="/incidents" className={classes.submit}>
+          <Link to={auth.isAdmin() ? `/admin/incidents` : `/incidents`} className={classes.submit}>
             <Button variant="contained">Cancel</Button>
           </Link>
         </CardActions>

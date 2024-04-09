@@ -13,6 +13,7 @@ router.route('/users/:userId')
 
 
 router.route('/incidents').get(authController.requireSignin, incidentController.list)
+router.route('/incidents').post(authController.requireSignin, incidentController.create);
 // router.param('userId', userController.listId)
 // router.route('/:userId').get(userController.read)
 // router.route('/:userId').put(userController.update)
