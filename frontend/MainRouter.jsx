@@ -29,13 +29,15 @@ import EditIncident from './src/incidents/EditIncident';
 import AdminRoute from './src/lib/AdminRoute';
 import ListUser from './src/users/ListUser';
 import EditUser from './src/users/EditUser';
+import Profile from './src/users/Profile'
 
 const isAuthenticated = auth.isAuthenticated();
 console.log(isAuthenticated);
+
 const MainRouter = () => {
   return (
     <div>
-      {!isAuthenticated.user && <Layout />}
+      {isAuthenticated && isAuthenticated?.user && <Layout />}
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
@@ -72,7 +74,17 @@ const MainRouter = () => {
           path="/profile"
           element={
             <PrivateRoute>
-              <EditUser />
+              <Profile/>
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          exact
+          path="/edit/:userId"
+          element={
+            <PrivateRoute>
+              <EditUser/>
             </PrivateRoute>
           }
         />
@@ -86,12 +98,32 @@ const MainRouter = () => {
             </AdminRoute>
           }
         />
+
+        <Route
+          exact
+          path="/admin/users/:userId"
+          element={
+            <AdminRoute>
+              <EditUser />
+            </AdminRoute>
+          }
+        />
+        <Route
+          exact
+          path="/admin/edit/:userId"
+          element={
+            <AdminRoute>
+              <EditUser />
+            </AdminRoute>
+          }
+        />
+
         <Route
           exact
           path="/admin/profile"
           element={
             <AdminRoute>
-              <EditUser />
+              <Profile />
             </AdminRoute>
           }
         />

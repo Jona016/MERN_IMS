@@ -48,11 +48,25 @@ const listId = async (req, res, next, id) => {
     }
 }
 
-const read = (req, res) => {
-    req.profile.hashed_password = undefined
-    req.profile.salt = undefined
-    return res.json(req.profile)
+const read = async (req, res) =>{
+    try{
+        const userId = req.params.userId;
+
+        const user = await User.findOne({_id: userId})
+
+        if(user){
+            return res.status(200).json (user);
+        }
+    } catch (error) {
+        res.status(400).json({ error: errorHandler.getErrorMessage(error) });
+    }
 }
+
+// const read = (req, res) => {
+//     req.profile.hashed_password = undefined
+//     req.profile.salt = undefined
+//     return res.json(req.profile)
+// }
 
 
 const update = async (req, res) => {
@@ -84,6 +98,7 @@ const remove = async (req, res) => {
         })
     }
 }
+
 
 function generateToken(user) {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '24h' });

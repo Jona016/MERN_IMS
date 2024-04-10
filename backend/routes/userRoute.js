@@ -7,12 +7,12 @@ router.route('/').post(userController.create)
 router.route('/').get(authController.requireSignin, userController.list)
 router.route('/:userId')
 .get (authController.requireSignin, userController.read)    
-.put (authController.requireSignin, authController.hasAuthorization, userController.update)
-.delete(authController.requireSignin, authController.hasAuthorization, userController.remove)
+.put (authController.requireSignin, authController.authorizeUser, userController.update)
+.delete(authController.requireSignin, authController.authorizeUser, userController.remove)
 
 router.param('userId', userController.listId)
-router.route('/:userId').get(userController.read)
-router.route('/:userId').put(userController.update)
-router.route('/:userId').delete(userController.remove)
+// router.route('/:userId').get(userController.read)
+// router.route('/:userId').put(userController.update)
+// router.route('/:userId').delete(userController.remove)
 
 export default router;

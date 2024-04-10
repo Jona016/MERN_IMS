@@ -52,16 +52,6 @@ const authorizeUser = (req, res, next) => {
   if (userId != reqUserId){
     return false;
   }
-  // const userId = req.user.id;
-
-/*   Incident.findById(incidentId, (err, incident) => {
-    if (err || !incident) {
-      return res.status(404).json({ message: 'Incident not found' });
-    }
-    if (incident.reportedBy !== userId) {
-      return res.status(403).json({ message: 'Unauthorized' });
-    }
-  }); */
   next(); 
 };
 
