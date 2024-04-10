@@ -17,8 +17,7 @@ mongoose.connection.on("error", () => {
 });
 
 app.get("/", (req, res) => {
-    console.log('here')
-    res.json({message: "Welcome to app"});
+    res.json({message: "Welcome to IMS"});
 })
 
 app.listen(PORT, (err) => {
