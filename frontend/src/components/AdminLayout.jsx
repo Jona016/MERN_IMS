@@ -21,7 +21,7 @@ const PrivateLayout = ({ children }) => {
           <div className='container'>
             <Link to="/admin"><img src={Logo} alt="Company Logo" className="logo" width="60px" height="60px" /></Link>
             <Link to="/admin"> <p>Incident Management System</p></Link>
-            <Link to="/admin">Admin</Link>
+            <Link to="/admin/incidents">Admin</Link>
             <Link to="/admin/users">Users</Link>
             <Link to="/admin/incidents">Incidents</Link>
             <Link to="/admin/profile">Profile</Link>
