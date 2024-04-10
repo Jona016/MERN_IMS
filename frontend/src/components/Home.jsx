@@ -17,9 +17,7 @@ const Home = () => {
                 <div className="welcome-container">
                         <div className="welcome-description">
                             <h1>Resolve your IT issues with us</h1>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                incididunt ut labore et dolore magna aliqua. Sit amet mattis vulputate enim
-                                nulla aliquet porttitor. Neque sodales ut etiam sit amet.</p>
+                            <p>Welcome to Incident Management System</p>
                             <div className="button-container">
                                 <button className="report-button" onClick={handleReportButtonClick}>Report Now</button>
                             </div>
